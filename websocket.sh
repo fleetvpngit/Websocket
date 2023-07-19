@@ -32,6 +32,12 @@ if [ -f "/etc/SSHPlus/priv.pem" ]; then
     rm -f /etc/SSHPlus/priv.pem
 fi
 
+# Verificar se o diretório /opt/sshplus já existe
+if [ -d "/opt/sshplus" ]; then
+    exibir_status "${cor_vermelho}O diretório /opt/sshplus já existe. Será excluído antes de continuar.${cor_padrao}"
+    rm -rf /opt/sshplus
+fi
+
 exibir_status "${cor_verde}Baixando e instalando arquivos do WebSocket...${cor_padrao}"
 
 # Baixar os arquivos necessários e dar permissões
