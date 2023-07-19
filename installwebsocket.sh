@@ -37,12 +37,3 @@ read -p $'\e[1mDigite a mensagem desejada para o WebSocket: \e[0m' mensagem
 screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg="$mensagem"
 
 exibir_status "${cor_verde}Verificando o status do proxy...${cor_padrao}"
-
-# Verificar se o proxy está em execução
-proxy_status=$(screen -list | grep "novoWS")
-
-if [ -n "$proxy_status" ]; then
-    exibir_status "${cor_verde}O proxy está em execução na porta $porta.${cor_padrao}"
-else
-    exibir_status "${cor_vermelho}Houve um erro ao iniciar o proxy.${cor_padrao}"
-fi
