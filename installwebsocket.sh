@@ -46,13 +46,13 @@ interromper_porta() {
     # Listar portas em execução
     screen -list | grep "novoWS"
 
-    # Solicitar a porta que deseja interromper
-    read -p $'\e[1mDigite a porta que deseja interromper (ex: 80, 8080): \e[0m' porta
+    # Solicitar o número do processo que deseja interromper
+    read -p $'\e[1mDigite o número do processo que deseja interromper (ex: 1234): \e[0m' processo
 
-    # Interromper o processo na porta fornecida
-    screen -XS "novoWS" quit
+    # Interromper o processo
+    screen -XS "$processo" quit
 
-    exibir_status "${cor_verde}Porta $porta interrompida com sucesso.${cor_padrao}"
+    exibir_status "${cor_verde}Processo $processo interrompido com sucesso.${cor_padrao}"
 }
 
 # Função principal para o comando "wsso"
