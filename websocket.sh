@@ -14,6 +14,12 @@ exibir_status() {
 
 exibir_status "INSTALADOR DO WEBSOCKET"
 
+# Verificar se o arquivo WebSocket já existe
+if [ -f "/etc/SSHPlus/WebSocket" ]; then
+    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/WebSocket já existe. Será excluído antes de continuar.${cor_padrao}"
+    rm -f /etc/SSHPlus/WebSocket
+fi
+
 exibir_status "${cor_verde}Baixando e instalando arquivos do WebSocket...${cor_padrao}"
 
 # Baixar os arquivos necessários e dar permissões
