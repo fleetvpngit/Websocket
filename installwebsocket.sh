@@ -14,20 +14,19 @@ exibir_status() {
 
 exibir_status "INSTALADOR DO WEBSOCKET"
 
-exibir_status "${cor_verde}Verificando se os arquivos já existem...${cor_padrao}"
-
-if [[ ! -f /etc/SSHPlus/pub.key || ! -f /etc/SSHPlus/priv.pem || ! -f /etc/SSHPlus/WebSocket.sh ]]; then
+# Verificar se os arquivos WebSocket, pub.key e priv.pem já existem
+if [ ! -f "/etc/SSHPlus/WebSocket" ] || [ ! -f "/etc/SSHPlus/pub.key" ] || [ ! -f "/etc/SSHPlus/priv.pem" ]; then
     exibir_status "${cor_verde}Baixando e instalando arquivos do WebSocket...${cor_padrao}"
 
     # Baixar os arquivos necessários e dar permissões
     cd /etc/SSHPlus/ && wget https://github.com/fleetvpngit/Websocket/raw/main/files/WebSocket && wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/pub.key && wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/priv.pem && chmod 777 WebSocket && cd $HOME
 else
-    exibir_status "${cor_verde}Os arquivos já existem. Continuando a configuração...${cor_padrao}"
+    exibir_status "${cor_verde}Arquivos do WebSocket já estão presentes. Pulando o download.${cor_padrao}"
 fi
 
 exibir_status "${cor_verde}Configurando o diretório SSHPlus...${cor_padrao}"
 
-# Criar diretório /opt/sshplus se não existir e criar arquivo vazio
+# Criar diretório /opt/sshplus e criar arquivo vazio
 mkdir -p /opt/sshplus
 echo > /opt/sshplus/sshplus
 
