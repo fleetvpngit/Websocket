@@ -25,12 +25,6 @@ else
     exibir_status "${cor_verde}Os arquivos já existem. Continuando a configuração...${cor_padrao}"
 fi
 
-exibir_status "${cor_verde}Configurando o diretório SSHPlus...${cor_padrao}"
-
-# Criar diretório /opt/sshplus se não existir e criar arquivo vazio
-mkdir -p /opt/sshplus
-echo > /opt/sshplus/sshplus
-
 exibir_status "${cor_verde}Configurando o WebSocket...${cor_padrao}"
 
 # Solicitar a porta desejada para o WebSocket
@@ -41,8 +35,6 @@ read -p $'\e[1mDigite a mensagem desejada para o WebSocket: \e[0m' mensagem
 
 # Executar comando com a porta e a mensagem fornecidas
 screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg="$mensagem"
-
-sleep 1
 
 exibir_status "${cor_verde}Verificando o status do proxy...${cor_padrao}"
 
