@@ -10,14 +10,13 @@ obter_entrada_usuario() {
 cd /etc/SSHPlus/ || { echo "Erro: diretório /etc/SSHPlus/ não encontrado"; exit 1; }
 
 # Passo 2: Baixar os arquivos necessários
-wget https://github.com/fleetvpngit/Websocket/raw/main/files/WebSocket || { echo "Erro: falha ao baixar o WebSocket"; exit 1; }
-wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/pub.key || { echo "Erro: falha ao baixar o arquivo pub.key"; exit 1; }
-wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/priv.pem || { echo "Erro: falha ao baixar o arquivo priv.pem"; exit 1; }
+wget https://github.com/fleetvpngit/Websocket/raw/main/files/WebSocket
+wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/pub.key
+wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/priv.pem
 chmod 777 WebSocket
 
 # Passo 3: Voltar para o diretório home
-cd "$HOME" || { echo "Erro: falha ao voltar para o diretório home"; exit 1; }
-
+cd "$HOME"
 
 # Passo 5: Criar o diretório /opt/sshplus
 mkdir -p /opt/sshplus
