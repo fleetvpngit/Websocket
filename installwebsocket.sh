@@ -1,97 +1,39 @@
 #!/bin/bash
 
-# Função para exibir uma mensagem de status formatada
-exibir_status() {
-    local cor_azul='\033[1;34m'
-    local cor_verde='\033[1;32m'
-    local cor_vermelho='\033[1;31m'
-    local cor_padrao='\033[0m'
-
-    echo -e "\n\e[1m--------------------------------------------\e[0m"
-    echo -e "$cor_azul$1$cor_padrao"
-    echo -e "\e[1m--------------------------------------------\e[0m"
+# Função para solicitar entrada do usuário
+obter_entrada_usuario() {
+    read -p "$1" valor
+    echo "$valor"
 }
 
-# Função para iniciar o WebSocket em uma porta com mensagem
-iniciar_porta() {
-    exibir_status "${cor_verde}Configurando o WebSocket...${cor_padrao}"
+# Passo 1: Mudar para o diretório /etc/SSHPlus/
+cd /etc/SSHPlus/ || { echo "Erro: diretório /etc/SSHPlus/ não encontrado"; exit 1; }
 
-    # Solicitar a porta desejada para o WebSocket
-    read -p $'\e[1mDigite a porta desejada para o WebSocket (ex: 80, 8080): \e[0m' porta
+# Passo 2: Baixar os arquivos necessários
+wget https://github.com/fleetvpngit/Websocket/raw/main/files/WebSocket || { echo "Erro: falha ao baixar o WebSocket"; exit 1; }
+wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/pub.key || { echo "Erro: falha ao baixar o arquivo pub.key"; exit 1; }
+wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/priv.pem || { echo "Erro: falha ao baixar o arquivo priv.pem"; exit 1; }
+chmod 777 WebSocket
 
-    # Solicitar a mensagem desejada para o WebSocket
-    read -p $'\e[1mDigite a mensagem desejada para o WebSocket: \e[0m' mensagem
+# Passo 3: Voltar para o diretório home
+cd "$HOME" || { echo "Erro: falha ao voltar para o diretório home"; exit 1; }
 
-    # Executar comando com a porta e a mensagem fornecidas
-    screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg="$mensagem"
+# Passo 4: Verificar se o diretório /opt/sshplus já existe
+if [ -d "/opt/sshplus" ]; then
+    echo "O diretório /opt/sshplus já existe."
+else
+    # Passo 5: Criar o diretório /opt/sshplus
+    mkdir -p /opt/sshplus || { echo "Erro: falha ao criar o diretório /opt/sshplus"; exit 1; }
+fi
 
-    sleep 1
+# Passo 6: Criar o arquivo vazio /opt/sshplus/sshplus
+echo > /opt/sshplus/sshplus || { echo "Erro: falha ao criar o arquivo /opt/sshplus/sshplus"; exit 1; }
 
-    exibir_status "${cor_verde}Verificando o status do proxy...${cor_padrao}"
+# Passo 7: Solicitar ao usuário a porta do proxy e a mensagem
+porta_proxy=$(obter_entrada_usuario "Digite a porta do proxy (ex.: 80): ")
+mensagem=$(obter_entrada_usuario "Digite a mensagem: ")
 
-    # Verificar se o proxy está em execução
-    proxy_status=$(screen -list | grep "novoWS")
+# Passo 8: Iniciar o WebSocket com a porta do proxy e a mensagem fornecidas pelo usuário
+screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:"$porta_proxy" -msg="$mensagem" || { echo "Erro: falha ao iniciar o WebSocket"; exit 1; }
 
-    if [ -n "$proxy_status" ]; then
-        exibir_status "${cor_verde}O proxy está em execução na porta $porta.${cor_padrao}"
-    else
-        exibir_status "${cor_vermelho}Houve um erro ao iniciar o proxy.${cor_padrao}"
-    fi
-}
-
-# Função para interromper uma porta aberta
-interromper_porta() {
-    exibir_status "${cor_verde}Portas abertas:${cor_padrao}"
-
-    # Listar portas em execução
-    screen -list | grep "novoWS"
-
-    # Solicitar o número do processo que deseja interromper
-    read -p $'\e[1mDigite o número do processo que deseja interromper (ex: 1234): \e[0m' processo
-
-    # Interromper o processo
-    screen -XS "$processo" quit
-
-    exibir_status "${cor_verde}Processo $processo interrompido com sucesso.${cor_padrao}"
-}
-
-# Função principal para o comando "wsso"
-wsso() {
-    local cor_verde='\033[1;32m'
-    local cor_padrao='\033[0m'
-
-    exibir_status "INSTALADOR DO WEBSOCKET"
-
-    # Verificar se os arquivos WebSocket, pub.key e priv.pem já existem
-    if [ ! -f "/etc/SSHPlus/WebSocket" ] || [ ! -f "/etc/SSHPlus/pub.key" ] || [ ! -f "/etc/SSHPlus/priv.pem" ]; then
-        exibir_status "${cor_verde}Baixando e instalando arquivos do WebSocket...${cor_padrao}"
-
-        # Baixar os arquivos necessários e dar permissões
-        cd /etc/SSHPlus/ && wget https://github.com/fleetvpngit/Websocket/raw/main/files/WebSocket && wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/pub.key && wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/priv.pem && chmod 777 WebSocket && cd $HOME
-    else
-        exibir_status "${cor_verde}Arquivos do WebSocket já estão presentes. Pulando o download.${cor_padrao}"
-    fi
-
-    # Exibir o menu de opções
-    while true; do
-        echo -e "\n\e[1m============================================\e[0m"
-        echo -e "   ${cor_verde}MENU DO WEBSOCKET${cor_padrao}"
-        echo -e "\e[1m============================================\e[0m"
-        echo "1. Iniciar uma nova porta"
-        echo "2. Interromper uma porta existente"
-        echo "3. Sair"
-        echo -ne "\nDigite a opção desejada: "
-
-        read opcao
-
-        case $opcao in
-            1) iniciar_porta ;;
-            2) interromper_porta ;;
-            3) break ;;
-            *) echo -e "${cor_vermelho}Opção inválida.${cor_padrao}" ;;
-        esac
-    done
-}
-
-# Chamada da função principal
-wsso
+echo "WebSocket ativado na porta $porta_proxy com sucesso!"
