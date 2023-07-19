@@ -23,8 +23,9 @@ iniciar_porta() {
     read -p $'\e[1mDigite a mensagem desejada para o WebSocket: \e[0m' mensagem
 
     # Executar comando com a porta e a mensagem fornecidas
-    screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg="$mensagem"
-
+    screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:1234 -msg=ff
+	
+	screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:1444 -msg=SUA_MENSAGEM_AQUI
     sleep 1
 
     exibir_status "${cor_verde}Verificando o status do proxy...${cor_padrao}"
@@ -64,10 +65,17 @@ wsso() {
 
     # Verificar se os arquivos WebSocket, pub.key e priv.pem já existem
     if [ ! -f "/etc/SSHPlus/WebSocket" ] || [ ! -f "/etc/SSHPlus/pub.key" ] || [ ! -f "/etc/SSHPlus/priv.pem" ]; then
+        # O código do mkdir permanece inalterado
+        mkdir -p /opt/sshplus
+
         exibir_status "${cor_verde}Baixando e instalando arquivos do WebSocket...${cor_padrao}"
 
-        # Baixar os arquivos necessários e dar permissões
         cd /etc/SSHPlus/ && wget https://github.com/fleetvpngit/Websocket/raw/main/files/WebSocket && wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/pub.key && wget https://raw.githubusercontent.com/fleetvpngit/Websocket/main/files/priv.pem && chmod 777 WebSocket && cd $HOME
+
+        # Verificar se o arquivo já existe antes de criar com echo
+        if [ ! -f "/opt/sshplus/sshplus" ]; then
+            echo > /opt/sshplus/sshplus
+        fi
     else
         exibir_status "${cor_verde}Arquivos do WebSocket já estão presentes. Pulando o download.${cor_padrao}"
     fi
