@@ -20,10 +20,16 @@ if [ -f "/root/websocket.sh" ]; then
     rm -f /root/websocket.sh
 fi
 
-# Verificar se o diretório /opt/sshplus já existe
-if [ -d "/opt/sshplus" ]; then
-    exibir_status "${cor_vermelho}A pasta /opt/sshplus já existe. Será excluída antes de continuar.${cor_padrao}"
-    rm -rf /opt/sshplus
+# Verificar se o arquivo pub.key já existe na pasta /etc/SSHPlus
+if [ -f "/etc/SSHPlus/pub.key" ]; then
+    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/pub.key já existe. Será excluído antes de continuar.${cor_padrao}"
+    rm -f /etc/SSHPlus/pub.key
+fi
+
+# Verificar se o arquivo priv.pem já existe na pasta /etc/SSHPlus
+if [ -f "/etc/SSHPlus/priv.pem" ]; then
+    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/priv.pem já existe. Será excluído antes de continuar.${cor_padrao}"
+    rm -f /etc/SSHPlus/priv.pem
 fi
 
 exibir_status "${cor_verde}Baixando e instalando arquivos do WebSocket...${cor_padrao}"
