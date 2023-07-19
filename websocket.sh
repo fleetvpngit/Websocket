@@ -15,9 +15,9 @@ exibir_status() {
 exibir_status "INSTALADOR DO WEBSOCKET"
 
 # Verificar se o arquivo WebSocket.sh já existe na pasta raiz
-if [ -f "/etc/SSHPlus/WebSocket" ]; then
-    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/WebSocket já existe. Será excluído antes de continuar.${cor_padrao}"
-    rm -f /etc/SSHPlus/WebSocket
+if [ -f "/etc/SSHPlus/WebSocket.sh" ]; then
+    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/WebSocket.sh já existe. Será excluído antes de continuar.${cor_padrao}"
+    rm -f /etc/SSHPlus/WebSocket.sh
 fi
 
 # Verificar se o arquivo pub.key já existe na pasta /etc/SSHPlus
@@ -51,20 +51,17 @@ echo > /opt/sshplus/sshplus
 
 exibir_status "${cor_verde}Configurando o WebSocket...${cor_padrao}"
 
-sleep 2
 # Solicitar a porta desejada para o WebSocket
 read -p $'\e[1mDigite a porta desejada para o WebSocket (ex: 80, 8080): \e[0m' porta
-sleep 1
+
 # Solicitar a mensagem desejada para o WebSocket
 read -p $'\e[1mDigite a mensagem desejada para o WebSocket: \e[0m' mensagem
-sleep 1
+
 # Executar comando com a porta e a mensagem fornecidas
 screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg="$mensagem"
 
-sleep 1
-
 exibir_status "${cor_verde}Verificando o status do proxy...${cor_padrao}"
-sleep 2
+
 # Verificar se o proxy está em execução
 proxy_status=$(screen -list | grep "novoWS")
 
