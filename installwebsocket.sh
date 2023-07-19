@@ -49,4 +49,4 @@ exibir_status "${cor_verde}Configurando o diretório SSHPlus...${cor_padrao}"
 mkdir /opt/sshplus
 echo > /opt/sshplus/sshplus
 
-screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:8890 -msg=SUA_MENSAGEM_AQUI
+screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:6666 -msg=SUA_MENSAGEM_AQUI
