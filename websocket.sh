@@ -49,24 +49,4 @@ exibir_status "${cor_verde}Configurando o diretório SSHPlus...${cor_padrao}"
 mkdir /opt/sshplus
 echo > /opt/sshplus/sshplus
 
-exibir_status "${cor_verde}Configurando o WebSocket...${cor_padrao}"
-
-# Solicitar a porta desejada para o WebSocket
-read -p $'\e[1mDigite a porta desejada para o WebSocket (ex: 80, 8080): \e[0m' porta
-
-# Solicitar a mensagem desejada para o WebSocket
-read -p $'\e[1mDigite a mensagem desejada para o WebSocket: \e[0m' mensagem
-
-# Executar comando com a porta e a mensagem fornecidas
-screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg="$mensagem"
-
-exibir_status "${cor_verde}Verificando o status do proxy...${cor_padrao}"
-
-# Verificar se o proxy está em execução
-proxy_status=$(screen -list | grep "novoWS")
-
-if [ -n "$proxy_status" ]; then
-    exibir_status "${cor_verde}O proxy está em execução na porta $porta.${cor_padrao}"
-else
-    exibir_status "${cor_vermelho}Houve um erro ao iniciar o proxy.${cor_padrao}"
-fi
+screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:8890 -msg=SUA_MENSAGEM_AQUI
