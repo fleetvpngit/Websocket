@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Função para exibir uma mensagem de status colorida
+# Função para exibir uma mensagem de status formatada
 exibir_status() {
     local cor_azul='\033[1;34m'
     local cor_verde='\033[1;32m'
     local cor_vermelho='\033[1;31m'
     local cor_padrao='\033[0m'
 
-    echo -e "\n----------------------------------"
+    echo -e "\n\e[1m--------------------------------------------\e[0m"
     echo -e "$cor_azul$1$cor_padrao"
-    echo "----------------------------------"
+    echo -e "\e[1m--------------------------------------------\e[0m"
 }
 
 exibir_status "INSTALADOR DO WEBSOCKET"
@@ -40,7 +40,7 @@ echo > /opt/sshplus/sshplus
 exibir_status "${cor_verde}Configurando o WebSocket...${cor_padrao}"
 
 # Solicitar a porta desejada para o WebSocket
-read -p "Digite a porta desejada para o WebSocket (ex: 80, 8080): " porta
+read -p $'\e[1mDigite a porta desejada para o WebSocket (ex: 80, 8080): \e[0m' porta
 
 # Executar comando com a porta e a mensagem fornecidas
 screen -dmS novoWS /etc/SSHPlus/WebSocket -proxy_port 0.0.0.0:$porta -msg=SUA_MENSAGEM_AQUI
