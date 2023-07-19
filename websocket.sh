@@ -15,9 +15,9 @@ exibir_status() {
 exibir_status "INSTALADOR DO WEBSOCKET"
 
 # Verificar se o arquivo WebSocket.sh já existe na pasta raiz
-if [ -f "/etc/SSHPlus/WebSocket.sh" ]; then
-    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/WebSocket.sh já existe. Será excluído antes de continuar.${cor_padrao}"
-    rm -f /etc/SSHPlus/WebSocket.sh
+if [ -f "/etc/SSHPlus/WebSocket" ]; then
+    exibir_status "${cor_vermelho}O arquivo /etc/SSHPlus/WebSocket já existe. Será excluído antes de continuar.${cor_padrao}"
+    rm -f /etc/SSHPlus/WebSocket
 fi
 
 # Verificar se o arquivo pub.key já existe na pasta /etc/SSHPlus
