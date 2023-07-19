@@ -44,16 +44,23 @@ interromper_porta() {
     exibir_status "${cor_verde}Portas abertas:${cor_padrao}"
 
     # Listar portas em execução
-    screen -list | grep "novoWS"
+    processos_ws=$(screen -list | grep "novoWS")
 
-    # Solicitar o número do processo que deseja interromper
-    read -p $'\e[1mDigite o número do processo que deseja interromper (ex: 1234): \e[0m' processo
+    if [ -z "$processos_ws" ]; then
+        exibir_status "${cor_vermelho}Nenhuma porta WebSocket em execução.${cor_padrao}"
+    else
+        echo "$processos_ws"
 
-    # Interromper o processo
-    screen -XS "$processo" quit
+        # Solicitar o número do processo que deseja interromper
+        read -p $'\e[1mDigite o número do processo que deseja interromper (ex: 1234): \e[0m' processo
 
-    exibir_status "${cor_verde}Processo $processo interrompido com sucesso.${cor_padrao}"
+        # Interromper o processo
+        screen -XS "$processo" quit
+
+        exibir_status "${cor_verde}Processo $processo interrompido com sucesso.${cor_padrao}"
+    fi
 }
+
 
 # Função principal para o comando "wsso"
 wsso() {
