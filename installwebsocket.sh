@@ -30,7 +30,7 @@ fi
 echo > /opt/sshplus/sshplus || { echo "Erro: falha ao criar o arquivo /opt/sshplus/sshplus"; exit 1; }
 
 # Passo 7: Solicitar ao usuário a porta do proxy e a mensagem
-porta_proxy=$(obter_entrada_usuario "Digite a porta do proxy (ex.: 80): ")
+porta_proxy=$(obter_entrada_usuario "Digite a porta do proxy (ex.: 80, 8080): ")
 mensagem=$(obter_entrada_usuario "Digite a mensagem: ")
 
 # Passo 8: Iniciar o WebSocket com a porta do proxy e a mensagem fornecidas pelo usuário
