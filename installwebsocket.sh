@@ -18,16 +18,12 @@ chmod 777 WebSocket
 # Passo 3: Voltar para o diretório home
 cd "$HOME" || { echo "Erro: falha ao voltar para o diretório home"; exit 1; }
 
-# Passo 4: Verificar se o diretório /opt/sshplus já existe
-if [ -d "/opt/sshplus" ]; then
-    echo "O diretório /opt/sshplus já existe."
-else
-    # Passo 5: Criar o diretório /opt/sshplus
-    mkdir -p /opt/sshplus || { echo "Erro: falha ao criar o diretório /opt/sshplus"; exit 1; }
-fi
+
+# Passo 5: Criar o diretório /opt/sshplus
+mkdir -p /opt/sshplus
 
 # Passo 6: Criar o arquivo vazio /opt/sshplus/sshplus
-echo > /opt/sshplus/sshplus || { echo "Erro: falha ao criar o arquivo /opt/sshplus/sshplus"; exit 1; }
+echo > /opt/sshplus/sshplus
 
 # Passo 7: Solicitar ao usuário a porta do proxy e a mensagem
 porta_proxy=$(obter_entrada_usuario "Digite a porta do proxy (ex.: 80, 8080): ")
